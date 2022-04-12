@@ -1,8 +1,21 @@
 plugins {
     id 'kotlin'
+    id 'com.vanniktech.maven.publish'
 }
-
+sourceSets {
+    main {
+        //用kotlin就必须要写这个sourceSet
+        kotlin {
+            srcDir 'src/main/kotlin'
+        }
+    }
+}
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
+}
+dependencies {
+    compileOnly gradleApi()
+    compileOnly localGroovy()
+    implementation 'com.android.tools.build:gradle:4.2.0'
 }

@@ -24,7 +24,7 @@ import kotlin.system.measureTimeMillis
  * @Version v1.0
  * @Description
  */
-class AnalyticsTransform : Transform() {
+class AnalyticsTransform(val params:AnalyticsExtension) : Transform() {
     override fun getName(): String = "AnalyticsPlugin"
 
     override fun getInputTypes(): MutableSet<QualifiedContent.ContentType> =
@@ -37,6 +37,12 @@ class AnalyticsTransform : Transform() {
 
     override fun transform(transformInvocation: TransformInvocation) {
         super.transform(transformInvocation)
+        if (!params.enable) {
+            //transform的执行是一个链式过程，
+            //每个transform都需要正确配置TransformOutputProvider
+            disablePlugin(transformInvocation)
+            return
+        }
         "Analytics 字节码插桩开始>>>>>>>>>>>>>>>>>".log()
         val time = measureTimeMillis {
             //获取输入的文件
@@ -57,16 +63,18 @@ class AnalyticsTransform : Transform() {
                 }
                 it.jarInputs.forEach { jarInput ->
                     //处理每个输入jar包
-//                    handlerJarInput(jarInput, outputProvider, incremental)
-                    transformInvocation.outputProvider.getContentLocation(
-                        jarInput.name,
-                        jarInput.contentTypes,
-                        jarInput.scopes,
-                        Format.JAR
-                    ).also { dest ->
-                        FileUtils.copyFile(jarInput.file, dest)
+                    if (!params.ignoreJar) {
+                        handlerJarInput(jarInput, outputProvider, incremental)
+                    } else {
+                        transformInvocation.outputProvider.getContentLocation(
+                            jarInput.name,
+                            jarInput.contentTypes,
+                            jarInput.scopes,
+                            Format.JAR
+                        ).also { dest ->
+                            FileUtils.copyFile(jarInput.file, dest)
+                        }
                     }
-
                 }
             }
         }

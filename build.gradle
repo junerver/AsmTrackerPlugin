@@ -10,9 +10,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.2.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//        classpath 'com.google.gms:google-services:4.3.5'
-//        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.1'
-//        classpath 'com.google.firebase:perf-plugin:1.3.5'
+        classpath 'com.vanniktech:gradle-maven-publish-plugin:0.18.0'
+        classpath 'xyz.junerver.asmtracker:analytics-plugin:1.0.0'
     }
 }
 
@@ -23,6 +22,11 @@ allprojects {
         jcenter()
         //添加jitpack仓库
         maven { url "https://jitpack.io" }
+    }
+    plugins.withId("com.vanniktech.maven.publish") {
+        mavenPublish {
+            sonatypeHost = "S01"
+        }
     }
 }
 

@@ -15,7 +15,7 @@ class AnalyticsPlugin :Plugin<Project> {
         params = project.extensions.findByType(AnalyticsExtension::class.java)
             ?: AnalyticsExtension()
         //插件注册Transform,固定写法
-        project.extensions.getByType(AppExtension::class.java).registerTransform(AnalyticsTransform())
+        project.extensions.getByType(AppExtension::class.java).registerTransform(AnalyticsTransform(params))
     }
     companion object {
         //用于注册的插件名称
@@ -24,5 +24,8 @@ class AnalyticsPlugin :Plugin<Project> {
 }
 
 open class AnalyticsExtension {
-
+    //插件的配置参数
+    var enable = true
+    //忽略jar包
+    var ignoreJar = true
 }
