@@ -1,0 +1,4 @@
+rootProject.name = "AsmTrackerPlugin"
+include ':app'
+include ':analytics-utils'
+include ':analytics-plugin'
