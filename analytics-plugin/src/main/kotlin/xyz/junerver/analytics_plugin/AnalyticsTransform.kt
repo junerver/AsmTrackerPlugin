@@ -22,7 +22,7 @@ import kotlin.system.measureTimeMillis
  * @Date 2022/4/11-10:24
  * @Email junerver@gmail.com
  * @Version v1.0
- * @Description
+ * @Description 实际插件是靠Transform来运行
  */
 class AnalyticsTransform(val params:AnalyticsExtension) : Transform() {
     override fun getName(): String = "AnalyticsPlugin"
